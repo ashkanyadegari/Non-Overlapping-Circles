@@ -36,6 +36,11 @@ const dist = function(x1, y1, z1, x2, y2, z2) {
   }
 }
 
+const checkBorder = function(circle,x1 = 0, x2 = width, y1 = 0, y2 = height) {
+  let radius = circle.r + 5
+  return circle.y - y1 > radius && circle.x - x1 > radius && x2 - circle.x > radius && y2 - circle.y > radius
+}
+
 // Generating array of circles
 while (circles.length < numCircles &&
          counter < protection) {
@@ -74,9 +79,12 @@ while (circles.length < numCircles &&
     // check whether the x is close to 0 or canvas width
     // check whether the y is close to 0 or canvas height
     // difference needs to be at least r + 5px
-    let radius = existing.r + 5
+    // let radius = existing.r + 5
 
-    if (existing.y - 0 > radius && existing.x - 0 > radius && width - existing.x > radius && height - existing.y > radius) {
+    // if (existing.y - 0 > radius && existing.x - 0 > radius && width - existing.x > radius && height - existing.y > radius) {
+    //   inCanvasCircles.push(existing)
+    // }
+  if (checkBorder(existing)) {
       inCanvasCircles.push(existing)
     }
   }
