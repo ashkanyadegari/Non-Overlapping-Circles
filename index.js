@@ -1,16 +1,21 @@
 const canvas = document.querySelector("canvas");
 
-console.log(canvas)
-
+// defining the size of the canvas
 canvas.width = 500
 canvas.height = 300
 
+// reassigning here, so its easier to refer back to it.
+let width = canvas.width
+let height = canvas.height
+
 let ctx = canvas.getContext('2d');
 
+// empty array of circles, which we will populate with individual circles
 let circles = [];
+
+// circle object will contain x-coordinate, y-coordinate and r(radius)
 let circle = {};
 let overlapping = false;
-let outOfCanvas = false;
 let numCircles = Math.floor(Math.random() * 40 + 15);
 let counter = 0;
 let protection = 10000;
@@ -31,19 +36,17 @@ const dist = function(x1, y1, z1, x2, y2, z2) {
   }
 }
 
-
 // Generating array of circles
 while (circles.length < numCircles &&
          counter < protection) {
     circle = {
-      x: random(490) - 10,
-      y: random(350) - 10,
+      x: random(width),
+      y: random(height),
       r: random(30)
     };
     overlapping = false;
 
     // check that it is not overlapping with any existing circle
-    // another brute force approach
     for (let i = 0; i < circles.length; i++) {
       let existing = circles[i];
       let d = dist(circle.x, circle.y, existing.x, existing.y)
@@ -63,10 +66,23 @@ while (circles.length < numCircles &&
     counter++;
   }
 
-  // Now we are getting an array of circles, each circle has an x, y and a r (radius)
-  console.log(circles)
+  let inCanvasCircles = []
 
-  ctx.fillRect(0, 299, 1, 1)
+  for (let i = 0; i < circles.length; i++) {
+    let existing = circles[i]
+
+    // check whether the x is close to 0 or canvas width
+    // check whether the y is close to 0 or canvas height
+    // difference needs to be at least r + 5px
+    let radius = existing.r + 5
+
+    if (existing.y - 0 > radius && existing.x - 0 > radius && width - existing.x > radius && height - existing.y > radius) {
+      inCanvasCircles.push(existing)
+    }
+  }
+
+  // Now we are getting an array of circles, each circle has an x, y and a r (radius)
+circles = inCanvasCircles
 
   // Drawing in H5
   const brandColors = ["#b63393", "#d66aa9", "#b9cce3", "#cadfb7", "#d6e2a4"]
