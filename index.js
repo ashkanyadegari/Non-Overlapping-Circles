@@ -10,6 +10,7 @@ let ctx = canvas.getContext('2d');
 let circles = [];
 let circle = {};
 let overlapping = false;
+let outOfCanvas = false;
 let numCircles = Math.floor(Math.random() * 40 + 15);
 let counter = 0;
 let protection = 10000;
@@ -31,13 +32,13 @@ const dist = function(x1, y1, z1, x2, y2, z2) {
 }
 
 
-
+// Generating array of circles
 while (circles.length < numCircles &&
          counter < protection) {
     circle = {
-      x: random(490),
-      y: random(350),
-      r: random(36)
+      x: random(490) - 10,
+      y: random(350) - 10,
+      r: random(30)
     };
     overlapping = false;
 
@@ -64,6 +65,8 @@ while (circles.length < numCircles &&
 
   // Now we are getting an array of circles, each circle has an x, y and a r (radius)
   console.log(circles)
+
+  ctx.fillRect(0, 299, 1, 1)
 
   // Drawing in H5
   const brandColors = ["#b63393", "#d66aa9", "#b9cce3", "#cadfb7", "#d6e2a4"]
